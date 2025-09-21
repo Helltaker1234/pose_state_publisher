@@ -24,6 +24,10 @@ WHEEL_RADIUS = 0.033
 MAX_X_LINEAR_VEL = 0.08 # m/s
 MAX_Z_ANGULAR_VEL = 0.17 # m/s
 
+# Twist 제어기 reference value
+REF_LINEAR = 0.50 # THRESH_AREA_NEAR
+REF_ANGULAR = 0
+
 
 class ODRIVE_CONTROL():
 
@@ -65,10 +69,10 @@ class ODRIVE_CONTROL():
         self.is_enabled = True
 
 
-    def odrive_drive_wheel(self, ref_angle, ref_distance):
+    def odrive_drive_wheel(self, measured_angle, measured_distance):
 
-        vel_angular_z = ref_angle * KP_ANGULAR_VEL
-        vel_linear_x = ref_distance * KP_LINEAR_VEL
+        vel_angular_z = (REF_ANGULAR - measured_angle) * KP_ANGULAR_VEL
+        vel_linear_x = (REF_LINEAR - measured_distance) * KP_LINEAR_VEL
 
         # 최대 속도 제한
         # 매우 중요 !!!!!!!!!!!!!!!!!!!!!!1
@@ -76,7 +80,7 @@ class ODRIVE_CONTROL():
         if(vel_angular_z > MAX_Z_ANGULAR_VEL): vel_angular_z = MAX_Z_ANGULAR_VEL
 
         right_wheel_vel = (vel_linear_x + WHEEL_DISTANCE * vel_angular_z / 2) / WHEEL_RADIUS
-        left_wheel_vel = (vel_linear_x - WHEEL_DISTANCE * vel_angular_z / 2)
+        left_wheel_vel = (vel_linear_x - WHEEL_DISTANCE * vel_angular_z / 2) / WHEEL_RADIUS
     
         self.odrv0.axis0.controller.input_vel = right_wheel_vel
         self.odrv0.axis1.controller.input_vel = left_wheel_vel

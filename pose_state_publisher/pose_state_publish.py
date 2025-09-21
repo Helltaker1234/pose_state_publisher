@@ -13,7 +13,7 @@ from mediapipe.tasks.python import vision
 
 # ----- 전역 설정 및 상수 정의 -----
 CAM_INDEX = 0 # 노트북 내장 카메라 = 0, USB 웹캠 = 2
-MODEL_PATH = "/home/junha/Downloads/pose_landmarker_full(1).task"
+MODEL_PATH = "/home/espero/Downloads/pose_landmarker_full(1).task"
 MAX_PEOPLE = 5
 DRAW_SKELETON = True
 XALIGN_TOL_RATIO = 0.1   # 화면 중앙 정렬 허용 오차 (가로폭 비율)
